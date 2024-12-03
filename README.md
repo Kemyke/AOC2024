@@ -4,3 +4,4 @@ These are my solutions for each day. I don't do any refactors after I have the c
 
 Day 1: usual LINQ solution for a quite easy first day
 Day 2: multiple errors in part2: did not remove the last number, use the wrong LINQ function
+Day 3: solve with regex, no bugs or tricky corner cases
