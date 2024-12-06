@@ -20,7 +20,6 @@ static int Middle(List<int> update)
     return update[update.Count / 2];
 }
 
-
 static List<int> Order(Dictionary<int, HashSet<int>> rules, List<int> update)
 {
     List<int> ret = new List<int>();
@@ -79,11 +78,3 @@ for(i = i + 1; i < input.Length; i++)
 Console.WriteLine(ret1);
 Console.WriteLine(ret2);
 Console.ReadLine();
-
-
-class Rule
-{
-    public int Page { get; set; }
-    public int PageAfter { get; set; }
-}
-
