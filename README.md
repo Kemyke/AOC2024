@@ -15,3 +15,5 @@ Day 5: ordering, no bugs
 Day 6: worked without bugs, it is not optimalized (pt2 is a bit slow), copy parsing code from last year
 
 Day 7: worked for the first time both part, 1st in the Trimble private board (1003 on global), yeah
+
+Day 8: hard to understand the description, otherwise straightforward implementation
