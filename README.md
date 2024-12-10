@@ -19,3 +19,5 @@ Day 7: worked for the first time both part, 1st in the Trimble private board (10
 Day 8: hard to understand the description, otherwise straightforward implementation
 
 Day 9: different parsing for part2 (not usual). Part2 had a bug as I forgot one criteria (fastest in company board)
+
+Day 10: similar puzzle was last year maybe. Code was simple and need only a minute to change for part 2.
