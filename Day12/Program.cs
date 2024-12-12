@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Xml.Schema;
-
-static Dictionary<long, Dictionary<long, Item>> ParseInput(List<string> input)
+﻿static Dictionary<long, Dictionary<long, Item>> ParseInput(List<string> input)
 {
     var ret = new Dictionary<long, Dictionary<long, Item>>();
     var c = input[0].Length;
@@ -17,32 +14,6 @@ static Dictionary<long, Dictionary<long, Item>> ParseInput(List<string> input)
 
     return ret;
 }
-
-//static void FillArea(Dictionary<long, Dictionary<long, Item>> map, Item item)
-//{
-//    foreach (var a in item.Coordinate.Adjacent())
-//    {
-//        if (map.ContainsKey(a.Y) && map[a.Y].ContainsKey(a.X))
-//        {
-//            var ai = map[a.Y][a.X];
-//            if(ai.PlantType == item.PlantType && ai.Region != null)
-//            {
-//                item.Region = ai.Region;
-//                item.Region.Area++;
-//                break;
-//            }
-//        }
-//    }
-
-//    if(item.Region == null)
-//    {
-//        item.Region = new Region { PlantType = item.PlantType, Area = 1 };
-//    }
-
-//    if (!item.Region.Coordinates.ContainsKey(item.Coordinate.Y))
-//        item.Region.Coordinates.Add(item.Coordinate.Y, new Dictionary<long, Coordinate>());
-//    item.Region.Coordinates[item.Coordinate.Y].Add(item.Coordinate.X, item.Coordinate);    
-//}
 
 static void FillArea(Dictionary<long, Dictionary<long, Item>> map, Item item, Region r)
 {
@@ -204,12 +175,13 @@ static void CalcPerimeter2(Region r)
             }
         }
     }
-    r.Perimeter = upperHlines.Values.Sum(v=>v.Count) + bottomHlines.Values.Sum(v => v.Count) + leftVlines.Values.Sum(v => v.Count) + rightVlines.Values.Sum(v => v.Count);
+    r.Perimeter2 = upperHlines.Values.Sum(v=>v.Count) + bottomHlines.Values.Sum(v => v.Count) + leftVlines.Values.Sum(v => v.Count) + rightVlines.Values.Sum(v => v.Count);
 }
 
 var input = File.ReadAllLines("input.txt").ToList();
 var map = ParseInput(input);
-var ret = 0;
+var ret1 = 0;
+var ret2 = 0;
 
 foreach(var item in map.Values.SelectMany(v=>v.Values))
 {
@@ -225,14 +197,16 @@ foreach(var item in map.Values.SelectMany(v=>v.Values))
 var regions = map.Values.SelectMany(v => v.Values).Select(i => i.Region).Distinct();
 foreach(var r in regions)
 {
+    CalcPerimeter(r);
     CalcPerimeter2(r);
-    Console.WriteLine($"{r.PlantType} {r.Area} {r.Perimeter}");
 
-    ret += r.Perimeter * r.Area;
+    ret1 += r.Perimeter * r.Area;
+    ret2 += r.Perimeter2 * r.Area;
 }
 
 
-Console.WriteLine(ret);
+Console.WriteLine(ret1);
+Console.WriteLine(ret2);
 Console.ReadLine();
 
 public class Coordinate
@@ -264,6 +238,7 @@ public class Item
 public class Region
 {
     public int Perimeter { get; set; }
+    public int Perimeter2 { get; set; }
     public int Area { get; set; }
     public char PlantType { get; set; }
     public Dictionary<long, Dictionary<long, Coordinate>> Coordinates { get; set; } = new Dictionary<long, Dictionary<long, Coordinate>>();
