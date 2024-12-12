@@ -23,3 +23,5 @@ Day 9: different parsing for part2 (not usual). Part2 had a bug as I forgot one 
 Day 10: similar puzzle was last year maybe. Code was simple and need only a minute to change for part 2.
 
 Day 11: debugging for minutes while part2 is low, I used the example input. :( So I had to bring the kids to school and find this "bug" afterwards.
+
+Day 12: not hard but needs a lot of coding for me (also school commute between part1 and part2)
