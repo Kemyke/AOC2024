@@ -25,3 +25,5 @@ Day 10: similar puzzle was last year maybe. Code was simple and need only a minu
 Day 11: debugging for minutes while part2 is low, I used the example input. :( So I had to bring the kids to school and find this "bug" afterwards.
 
 Day 12: not hard but needs a lot of coding for me (also school commute between part1 and part2)
+
+Day 13: My approach was too complicated for part2. So I started solving it on paper and was able to write the correct equations. I was way too slow for part2. 
