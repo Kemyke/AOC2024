@@ -27,3 +27,5 @@ Day 11: debugging for minutes while part2 is low, I used the example input. :( S
 Day 12: not hard but needs a lot of coding for me (also school commute between part1 and part2)
 
 Day 13: My approach was too complicated for part2. So I started solving it on paper and was able to write the correct equations. I was way too slow for part2. 
+
+Day 14: Fun puzzle, I did the second part by printing it out and find the (unknown) pattern in the file, looking for lots of robot in one line (visual c :D).
