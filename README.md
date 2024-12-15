@@ -29,3 +29,5 @@ Day 12: not hard but needs a lot of coding for me (also school commute between p
 Day 13: My approach was too complicated for part2. So I started solving it on paper and was able to write the correct equations. I was way too slow for part2. 
 
 Day 14: Fun puzzle, I did the second part by printing it out and find the (unknown) pattern in the file, looking for lots of robot in one line (visual c :D).
+
+Day 15: Xmas party, so today I did not get up early, part1 solved before lunch, part2 solved in the evening
