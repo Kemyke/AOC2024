@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using System.Text;
+﻿using System.Text;
 
 static void VisualizeMap(Dictionary<long, Dictionary<long, Item>> map)
 {
@@ -8,8 +7,7 @@ static void VisualizeMap(Dictionary<long, Dictionary<long, Item>> map)
     for (int y = 0; y < map.Count; y++)
         sb.AppendLine(string.Join("", map[y].Select(k => k.Value.Tile)));
 
-    //File.AppendAllText("out.txt", sb.ToString());
-    Console.Write(sb.ToString());
+    File.AppendAllText("out.txt", sb.ToString());
 }
 
 static Dictionary<long, Dictionary<long, Item>> ParseInput(List<string> input)
@@ -29,37 +27,48 @@ static Dictionary<long, Dictionary<long, Item>> ParseInput(List<string> input)
     return ret;
 }
 
-//static long GetHeur(Coordinate pos, string face, Coordinate end)
-//{
-//    var ret = Math.Abs(pos.X - end.X) + Math.Abs(pos.Y - end.Y);
-//    if (face == "N" || face == "E")
-//        ret += 1000;
-//    if (face == "S" || face == "W")
-//        ret += 2000;
-//    return ret;
-//}
+static long GetHeur(Coordinate pos, string face, Coordinate end)
+{
+    var ret = Math.Abs(pos.X - end.X) + Math.Abs(pos.Y - end.Y);
+    if (face == "N" || face == "E")
+    {
+        if ((face == "N" && pos.X == end.X) || (face == "E" && pos.Y == end.Y))
+        {
+
+        }
+        else
+        {
+            ret += 1000;
+        }
+    }
+    if (face == "S" || face == "W")
+        ret += 2000;
+    return ret;
+}
 
 var input = File.ReadAllLines("input.txt").ToList();
 var map = ParseInput(input);
 
-string face = "E";
 Coordinate pos = map.SelectMany(t => t.Value.Values).Single(i => i.Tile == "S").Coordinate;
 Coordinate goal = map.SelectMany(t => t.Value.Values).Single(i => i.Tile == "E").Coordinate;
-long ret = 0;
-List<Coordinate> ret2 = new List<Coordinate>();
+List<(List<Coordinate>, long)> ret2 = new List<(List<Coordinate>, long)>();
 
-var cache = new Dictionary<long, Dictionary<long, long>>();
-for(int y = 0; y < map.Count; y++)
+var cache = new Dictionary<long, Dictionary<long, Dictionary<string, long>>>();
+
+for (int y = 0; y < map.Count; y++)
 {
-    cache.Add(y, new Dictionary<long, long>());
+    cache.Add(y, new Dictionary<long, Dictionary<string, long>>());
     for (int x = 0; x < map.First().Value.Count; x++)
     {
-        cache[y].Add(x, long.MaxValue);
+        cache[y].Add(x, new Dictionary<string, long>());
+        cache[y][x].Add("W", long.MaxValue);
+        cache[y][x].Add("E", long.MaxValue);
+        cache[y][x].Add("N", long.MaxValue);
+        cache[y][x].Add("S", long.MaxValue);
     }
 }
-var steps = new List<(Coordinate, string, long, List<Coordinate>, long)>();
-steps.Add((pos, face, 0, new List<Coordinate>(), 0));
-//steps.Add((pos, face, 0, new List<Coordinate>(), GetHeur(pos, face, goal)));
+var steps = new List<(Coordinate, string, long, List<Coordinate>, long, HashSet<long>)>();
+steps.Add((pos, "H", 0, new List<Coordinate> { pos }, 0, new HashSet<long>()));
 
 VisualizeMap(map);
 
@@ -69,116 +78,64 @@ while(steps.Any())
     var cs = steps.First();
     steps.RemoveAt(0);
 
-    if (cs.Item1.Y == 8 && cs.Item1.X == 15)
-        //if (cs.Item1.Y == 13 && cs.Item1.X == 5)
+    if (map[cs.Item1.Y][cs.Item1.X].Tile == "E")
     {
-
-
-    }
-
-    if(map[cs.Item1.Y][cs.Item1.X].Tile == "E")
-    {
-        if (ret == 0)
-        {
-            ret = cs.Item3;
-            ret2.AddRange(cs.Item4);
-            ret2 = ret2.Distinct().ToList();
-            continue;
-        }
-        else if (cs.Item3 == ret)
-        {
-            ret2.AddRange(cs.Item4);
-            ret2 = ret2.Distinct().ToList();
-            continue;
-        }
-        else 
-        {
-            break;
-        }
+        ret2.Add((cs.Item4, cs.Item3));
     }
 
     foreach (var a in cs.Item1.Adjacent())
     {
         if (map[a.Item1.Y][a.Item1.X].Tile != "#")
         {
-            long c = 0;
-            if(a.Item2 == "N")
+            var cv = a.Item1.Y * 100000 + a.Item1.X;
+            if (cs.Item6.Contains(cv))
             {
-                if(cs.Item2 == "N")
-                {
-                    c = cs.Item3 + 1;
-                }
-                else if (cs.Item2 == "E" || cs.Item2 == "W")
-                {
-                    c = cs.Item3 + 1 + 1000;
-                }
-                else if (cs.Item2 == "S")
-                {
-                    c = cs.Item3 + 1 + 2000;
-                }
+                continue;
             }
-            else if (a.Item2 == "E")
-            {
-                if (cs.Item2 == "E")
-                {
-                    c = cs.Item3 + 1;
-                }
-                else if (cs.Item2 == "N" || cs.Item2 == "S")
-                {
-                    c = cs.Item3 + 1 + 1000;
-                }
-                else if (cs.Item2 == "W")
-                {
-                    c = cs.Item3 + 1 + 2000;
-                }
-            }
-            if (a.Item2 == "S")
-            {
-                if (cs.Item2 == "S")
-                {
-                    c = cs.Item3 + 1;
-                }
-                else if (cs.Item2 == "E" || cs.Item2 == "W")
-                {
-                    c = cs.Item3 + 1 + 1000;
-                }
-                else if (cs.Item2 == "N")
-                {
-                    c = cs.Item3 + 1 + 2000;
-                }
-            }
-            if (a.Item2 == "W")
-            {
-                if (cs.Item2 == "W")
-                {
-                    c = cs.Item3 + 1;
-                }
-                else if (cs.Item2 == "N" || cs.Item2 == "S")
-                {
-                    c = cs.Item3 + 1 + 1000;
-                }
-                else if (cs.Item2 == "E")
-                {
-                    c = cs.Item3 + 1 + 2000;
-                }
-            }
-            var hc = c;//GetHeur(a.Item1, a.Item2, goal) + c;
-            if (cache[a.Item1.Y][a.Item1.X] == hc)
-            {
 
-            }
-            if (cache[a.Item1.Y][a.Item1.X] >= hc)
+            var c = 1;
+            var face = cs.Item2;
+            var last = cs.Item4.Last();
+            if (last.Y == a.Item1.Y)
             {
-                steps.Add((a.Item1, a.Item2, c, cs.Item4.Append(a.Item1).ToList(), hc));               
-                cache[a.Item1.Y][a.Item1.X] = hc;
+                if (cs.Item2 == "V")
+                {
+                    c += 1000;
+                    face = "H";
+                }
+            }
+            if (last.X == a.Item1.X)
+            {
+                if (cs.Item2 == "H")
+                {
+                    c += 1000;
+                    face = "V";
+                }
+            }
+
+            var nc = cs.Item3 + c;
+            var nh = nc + GetHeur(a.Item1, a.Item2, goal);
+            if (cache[a.Item1.Y][a.Item1.X][a.Item2] >= nh)
+            {
+                steps.Add((a.Item1, face, nc, cs.Item4.Append(a.Item1).ToList(), nh, cs.Item6.Append(cv).ToHashSet()));
+                cache[a.Item1.Y][a.Item1.X][a.Item2] = nh;
             }
         }
     }
     
 }
 
+var ret = ret2.Min(p => p.Item2);
+
+foreach (var cc in ret2.Where(c => c.Item2 == ret))
+    foreach (var c in cc.Item1)
+    {
+        map[c.Y][c.X].Tile = "O";
+    }
+VisualizeMap(map);
+
 Console.WriteLine(ret);
-Console.WriteLine(ret2.Count);
+Console.WriteLine(map.SelectMany(m=>m.Value.Values).Count(x=>x.Tile == "O"));
 Console.ReadLine();
 
 public class Coordinate
@@ -191,10 +148,10 @@ public class Coordinate
         List<(Coordinate, string)> ret =
         [
             (new Coordinate { Y = Y - 1, X = X }, "N"),
-                (new Coordinate { Y = Y, X = X - 1}, "W"),
-                (new Coordinate { Y = Y, X = X + 1 }, "E"),
-                (new Coordinate { Y = Y + 1, X = X }, "S"),
-            ];
+            (new Coordinate { Y = Y, X = X - 1}, "W"),
+            (new Coordinate { Y = Y, X = X + 1 }, "E"),
+            (new Coordinate { Y = Y + 1, X = X }, "S"),
+        ];
 
         return ret;
     }
