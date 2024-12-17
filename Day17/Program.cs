@@ -1,4 +1,6 @@
-﻿var input = File.ReadAllLines("input.txt").ToList();
+﻿using System.Text;
+
+var input = File.ReadAllLines("input.txt").ToList();
 long ret = 0;
 
 IntComp comp = new IntComp();
@@ -12,38 +14,74 @@ foreach (var line in input)
         comp.C = long.Parse(line.Replace("Register C: ", ""));
 
     if (line.StartsWith("Program: "))
-        comp.Instructions = line.Replace("Program: ", "").Split(",").Select(s=>long.Parse(s)).ToList();
+        comp.Instructions = line.Replace("Program: ", "").Split(",").Select(s => long.Parse(s)).ToList();
 
 }
 
-long i = 674376090;
+long i = 0;
 var rr = string.Join(",", comp.Instructions);
+
+while (comp.DoOp() != true)
+{
+}
+
+string ret1 = string.Join(",", comp.Output);
+Console.WriteLine(ret1);
+
+long ret2 = 0;
+string goal = "2415751603465530";
+StringBuilder sb = new StringBuilder();
+i = (long)Math.Pow(8, 15);
+var e = 14;
 while (true)
 {
-    var n = new IntComp { B = comp.B, C = comp.C, Instructions = comp.Instructions };
-    n.A = i++;
-    Console.WriteLine($"A: {n.A} B: {n.B} C: {n.C}");
+    long A = i;
+    long B = 0;
+    long C = 0;
 
-    while (n.DoOp() != true)
+    sb.Clear();
+    while (true)
     {
-        Console.WriteLine($"A: {n.A} B: {n.B} C: {n.C}");
-
-        var pr = string.Join(",", n.Output);
-        if (!rr.StartsWith(pr))
-        {
-            if (pr.Length > 14)
-                Console.WriteLine($"{i - 1} {pr}");
-
+        B = A % 8;
+        B = B ^ 5;
+        C = A / (long)Math.Pow(2, B);
+        B = B ^ 6;
+        A = A / 8;
+        B = B ^ C;
+        sb.Append(B % 8);
+        if (A == 0)
             break;
-        }
     }
-
-    var r = string.Join(",", n.Output);
-    if (r == rr)
+                         
+    if (sb.ToString() == goal)
+    {
+        ret2 = i;
         break;
+    }
+    else
+    {
+        if(sb.Length > 16)
+        {
+            return;
+        }
+        if (sb[e + 1] == goal[e+1])
+        {
+            if (sb.ToString().Substring(e + 1) != goal.Substring(e + 1))
+            {
+                e++;
+            }
+            else
+            {
+                e--;
+            }
+            if (e == -2)
+                break;
+        }
+        i += (long)Math.Pow(8, e < 0 ? 0 : e);
+    }
 }
 
-Console.WriteLine(i - 1);
+Console.WriteLine(ret2);
 Console.ReadLine();
 
 class IntComp
