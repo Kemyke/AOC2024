@@ -31,3 +31,7 @@ Day 13: My approach was too complicated for part2. So I started solving it on pa
 Day 14: Fun puzzle, I did the second part by printing it out and find the (unknown) pattern in the file, looking for lots of robot in one line (visual c :D).
 
 Day 15: Xmas party, so today I did not get up early, part1 solved before lunch, part2 solved in the evening
+
+Day 16: Path finding was easy. Part2 was more tricky, I tried different approaches and maybe overcomplicated.
+
+Day 17: Good old IntComputer. Part1 was long to code but easy, part2 was interestin and I was not sure that my solution will work but eventually it worked. 
