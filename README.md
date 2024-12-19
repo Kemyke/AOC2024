@@ -35,3 +35,7 @@ Day 15: Xmas party, so today I did not get up early, part1 solved before lunch, 
 Day 16: Path finding was easy. Part2 was more tricky, I tried different approaches and maybe overcomplicated.
 
 Day 17: Good old IntComputer. Part1 was long to code but easy, part2 was interestin and I was not sure that my solution will work but eventually it worked. 
+
+Day 18: An easier day 16
+
+Day 19: Recursive solution. With cache it is fast enough.
