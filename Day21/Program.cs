@@ -4,11 +4,11 @@ DirPad dp = new DirPad();
 var ret1 = 0;
 
 var input = File.ReadAllLines("input.txt").ToList();
+var cache = new Dictionary<int, Dictionary<string, List<string>>>();
+
 foreach (var line in input)
 {
     var cs = np.CodeCoordinates(line);
-    //List<string> rett = new List<string> ();
-    //List<string> rettt = new List<string> ();
     
     List<string> numPadSeq = new List<string> { "" };
     for (int i = 0; i < cs.Count; i++)
@@ -27,23 +27,25 @@ foreach (var line in input)
     List<string> retSeq = new List<string>();
     for(int rs = 0; rs < 2; rs++)
     {
+        if (!cache.ContainsKey(rs))
+            cache.Add(rs, new Dictionary<string, List<string>>());
+
         retSeq.Clear();
         foreach (var rr in dirSeq)
         {
-
+            var rrparts = rr.Split("A").Select(s=>s+"A").ToList();
             List<string> trets = new List<string> { "" };
-            for (int i = 0; i < rr.Length; i++)
+
+            foreach (var part in rrparts)
             {
-                var s = dp.FromTo(i < 1 ? DirPad.nums['A'] : DirPad.nums[rr[i - 1]], DirPad.nums[rr[i]]);
-                List<string> rets = new List<string>();
-                foreach (var r in trets)
-                    foreach (var ss in s)
-                    {
-                        rets.Add(r + ss + "A");
-                    }
-                trets = rets;
+                for (int i = 0; i < part.Length; i++)
+                {
+                    var s = dp.FromTo(i < 1 ? DirPad.nums['A'] : DirPad.nums[part[i - 1]], DirPad.nums[part[i]]);
+                    trets = trets.SelectMany(fl => s.Select(sl => fl + sl + "A")).Distinct().ToList();
+                }
             }
-            retSeq.AddRange(trets);
+
+            retSeq.AddRange(trets.Select(t=>t.Substring(0, t.Length - 1)));
         }
         dirSeq = retSeq.ToList();
     }
