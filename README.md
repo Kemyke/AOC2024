@@ -39,3 +39,11 @@ Day 17: Good old IntComputer. Part1 was long to code but easy, part2 was interes
 Day 18: An easier day 16
 
 Day 19: Recursive solution. With cache it is fast enough.
+
+Day 20: Complicated wording, I tried to solve a harder problem for part2 first. 
+
+Day 21: Got sick and skipped getting up early and solved day 21 on day 22. Maybe the hardest puzzle for me this year. Lots of debugging for part2 (I needed a complet rewrite from part1)
+
+Day 22: Relatively easy after day 21, also part2 was surprisingly straightforward
+
+Day 23: Also a quite easy day (thanks Eric), naive algorithm for part2 worked well. 
